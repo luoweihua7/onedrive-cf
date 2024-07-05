@@ -150,7 +150,7 @@ export async function checkAuthRoute(
     if (error?.response?.status === 404) {
       return { code: 404, message: "You didn't set a password." }
     } else {
-      return { code: 500, message: 'Internal server error.' }
+      return { code: error?.response?.status ?? 500, message: 'Internal server error.' }
     }
   }
 
@@ -169,11 +169,11 @@ export default async function handler(req: NextRequest): Promise<Response> {
     // verify identity of the authenticated user with the Microsoft Graph API
     const { data, status } = await getAuthPersonInfo(accessToken)
     if (status !== 200) {
-      return new Response("Non-200 response from Microsoft Graph API", { status: 500 })
+      return new Response('Non-200 response from Microsoft Graph API', { status: 500 })
     }
 
     if (data.userPrincipalName !== siteConfig.userPrincipalName) {
-      return new Response("Do not pretend to be the owner!", { status: 403 })
+      return new Response('Do not pretend to be the owner!', { status: 403 })
     }
 
     await storeOdAuthTokens({ accessToken, accessTokenExpiry, refreshToken })
@@ -209,7 +209,11 @@ export default async function handler(req: NextRequest): Promise<Response> {
   }
 
   // Handle protected routes authentication
-  const { code, message } = await checkAuthRoute(cleanPath, accessToken, req.headers.get('od-protected-token') as string)
+  const { code, message } = await checkAuthRoute(
+    cleanPath,
+    accessToken,
+    req.headers.get('od-protected-token') as string
+  )
   // Status code other than 200 means user has not authenticated yet
   if (code !== 200) {
     return new Response(JSON.stringify({ error: message }), { status: code })

@@ -2,12 +2,13 @@ import type { ParsedUrlQuery } from 'querystring'
 
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouseChimney } from '@fortawesome/free-solid-svg-icons'
 
 const HomeCrumb = () => {
   return (
     <Link href="/" className="flex items-center">
-      <FontAwesomeIcon className="h-3 w-3" icon={['far', 'flag']} />
-      <span className="ml-2 font-medium">{'Home'}</span>
+      <FontAwesomeIcon className="h-3 w-3" icon={faHouseChimney} />
+      <span className="ml-1 font-medium">{'Home'}</span>
     </Link>
   )
 }

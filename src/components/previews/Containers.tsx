@@ -1,5 +1,5 @@
 export function PreviewContainer({ children }): JSX.Element {
-  return <div className="rounded bg-white p-3 shadow-sm dark:bg-gray-900 dark:text-white">{children}</div>
+  return <div className="rounded border-[1px] border-solid border-[#e6e6e6] dark:border-[#333333] bg-white p-3 shadow-sm dark:bg-gray-900 dark:text-white">{children}</div>
 }
 
 export function DownloadBtnContainer({ children }): JSX.Element {
